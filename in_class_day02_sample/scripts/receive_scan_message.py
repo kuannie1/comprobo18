@@ -4,7 +4,6 @@ from __future__ import print_function
 
 import rospy
 from sensor_msgs.msg import LaserScan
-from geometry_msgs.msg import PointStamped
 
 class ReceiveMessageNode(object):
     def __init__(self):
