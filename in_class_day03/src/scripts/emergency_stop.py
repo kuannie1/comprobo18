@@ -2,7 +2,7 @@
 from __future__ import print_function, division
 from std_msgs.msg import Header
 import rospy
-from neato_node.msg import Bump # this import is needed for Bump sensors
+from neato_node.msg import Bump 
 from geometry_msgs.msg import Twist, Vector3
 from geometry_msgs.msg import PointStamped 
 # find the right packages from running something like 
@@ -38,4 +38,3 @@ class EmergencyStopNode(object):
 if __name__ == '__main__':
     node = EmergencyStopNode()
     node.run()
-		

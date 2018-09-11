@@ -4,27 +4,28 @@ from std_msgs.msg import Header
 import rospy
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist, Vector3
-from geometry_msgs.msg import PointStamped # find the right packages from running something like 'rostopic info /cmd_vel' or 'rosmsg show geometry_msgs/Twist'
+from geometry_msgs.msg import PointStamped 
 
 
 def get_first_nonzero_val(values):
-    for num in values:
-	if num != 0:
-	    return num
+    for i in range(len(values)):
+		num = values[i]
+		if num != 0:
+			return num
     return 0
-
 
 class DistanceEmergencyStopNode(object):
     """ This node moves forward at a fixed pace and stops when it detects an object within a certain distance. """
     def __init__(self, threshold):
-		self.objdistance = 0
+		self.objdistance = None
 		rospy.init_node('receive_message_node')
 		rospy.Subscriber('/scan', LaserScan, self.process_scan)
 		self.pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
 		self.threshold = threshold
 
     def process_scan(self, m):
-        self.objdistance = get_first_nonzero_val(m.ranges)
+		if m.ranges[0] != 0.0:
+			self.objdistance = m.ranges[0]
 
     def run(self):
 		r = rospy.Rate(10)
@@ -38,5 +39,5 @@ class DistanceEmergencyStopNode(object):
 
 
 if __name__ == '__main__':
-    node = DistanceEmergencyStopNode(.5)
+    node = DistanceEmergencyStopNode(1)
     node.run()
